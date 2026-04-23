@@ -1,0 +1,5 @@
+MP3 PSEUDOCODE
+Import os, pygame
+
+music list
+If music triggered, use pygame to run music file. 

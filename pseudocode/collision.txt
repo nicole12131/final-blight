@@ -1,0 +1,12 @@
+COLLISION PSEUDOCODE
+import os, pygame
+
+define layer with type & position
+    if type = ground
+        no collision, under player
+    if layer = wall
+        If player touches transparrent pixel, don't stop player
+        Else if player touches opaque, undo last movement
+    if layer = misc
+        no colision, over player
+    if layer = sky, cover top
