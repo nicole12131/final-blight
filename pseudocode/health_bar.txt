@@ -1,0 +1,15 @@
+# NS 1st Health Bar/ enemy attack
+import pygame
+from enemy import attack_player
+from char_move_set import attack_enemy
+
+define Health Bar
+    use health bar sprite
+    calculate damage and left over health
+    display new bar
+
+define enemy_bar
+    display bar over enemy
+    
+define player_bar
+    display bar over player

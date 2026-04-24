@@ -2,14 +2,14 @@ import pygame, os, random
 
 enemy dictionary
 
-define attack: 
+define attack_player: 
     enemy 
 
 define action:
     act = random(1-3)
     
     if act = 1: 
-        attack
+        attack_player
     else if act = 2: 
         block
     else if act = 3

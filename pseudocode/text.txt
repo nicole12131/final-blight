@@ -1,0 +1,15 @@
+Text PSEUDOCODE
+import pygame
+import letter image assets
+
+define text: 
+    variables:
+        box start X
+        box end X
+        box start Y
+        box end Y
+
+    if outside box, new line
+    else if enter in string, new box if enter is pressed with text after enter
+    else if letter in imported string display letters in box & position
+    else: nothing

@@ -1,0 +1,72 @@
+import pygame
+
+
+Def class skip button: 
+    define in it and take in self,text,x,y,width, hieght and color 
+        do the self thing so self.rect = pygame,rect(Variables)
+        also remmeber to include text and color 
+    
+
+    def draw import self and screen 
+        draw the button rectangle 
+        define font as a arial and remmeber to put the number 
+        text_surf = font.render(self.text, True, (255, 255, 255))
+        text_rect = text_surf.get_rect(center=self.rect.center)
+        screen.blit(text_surf, text_rect)
+
+    def if it clicked import self and event 
+        if event type is equal to pygame.MOUSEBUTTONDWON 
+            if slef collidepoint(event.pos)
+                return it true 
+        
+        return false 
+
+
+
+while skip button returns true
+    then play the cutscene display on screen a long paragraph about whats happening 
+    show the user "Prelude:
+                Run: Dramatic Music 
+                Display Image: Castle
+                Display Text: There was one A kingdom called ArisKatsia
+                Display Image: The last kings lays slaghtered in from the princes eyes. 
+                Display Text: This is a trial about tragedy. 
+                Display Image: Destroyed Kingdom
+                Display Text: Now it's only up to you, our last prince, Zan.
+                Pan to Game Title: THE FINAL BLIGHT  
+                Display: Menu
+
+
+Give them the options
+ to ether make a new game, load a previous game, or mp3 player
+
+ If they choose a new game then first play the tutorial 
+    show the user Run: Tutorial Battle Music 
+    Scene: Zan starts in a deserted town, with a few theives standing his way. 
+    Dialogue Box: Move yourself using the arrow keys.
+    Description: Player Closes in to enemy
+    Dialogue Box: Be sure to use the Z key to attack your foes!
+    Description: As soon as Z is pressed, player unpauses and attacks. 
+    Desciription: Enemy starts attack, Pausing you at attack frame. 
+    Dialogue Box: Be sure to press Arrow Key & C to perform a dodge!
+    Description: As soon as player presses direction & C, resume gameplay. 
+    Description: Pause screen and display dialogue box. 
+    Dialogue Box: Press V to open Magic Menu. 
+    Description: Player presses V, magic menu opens 
+    Dialogue Box: Press 1-3 to use Fire, Blizzard, or Thunder, and press 4 to switch between stronger & weaker spells (eg., Fire, Fira, Firaga). 
+    Description: Player chooses spell, one last pause.  
+    Dialogue Box: Press X and directional keys to sprint to the next theif! 
+    Description: Player Presses Sprint key & directinal key. 
+    Description: Battle plays through untill you win. 
+
+    creater new csv file with cooridnate function and then play run game function
+
+
+
+
+
+
+
+    
+
+                    

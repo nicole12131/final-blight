@@ -1,0 +1,76 @@
+# NS 1st GUI PSEUDOCODE
+
+
+import pygame
+
+
+ask user if they want to check or upgrade a skill or trait
+
+    if user choose check
+        call check trait or skill function 
+    if user choose upgrade 
+        call upgrade function
+    else 
+        print invalid option try again
+
+
+create a function for upgrade
+
+    ask user if they to upgrade a skill or trait
+
+    if user pick skill
+            ask them to choose a skill
+        check if user has enough materials
+            if user has enough materials 
+                ask how many levels they want to upgrade the skill
+            if user don't have enough materials
+                print you don't have enough materials
+            else 
+                print invali option try again
+
+    if user pick trait
+            ask them to choose a trait
+        check if user has enough materials
+            if user has enough materials 
+                ask how many levels they want to upgrade the trait
+            if user don't have enough materials
+                print you don't have enough materials
+            else 
+                print invali option try again
+
+    ask user if they want to choose another skill or trait to upgrade
+
+        if user say yes 
+            start over 
+        if user say no 
+            make them go to main
+        else 
+            print invali option try again
+
+
+create a function for check skills or traits 
+
+    ask user if they want to check a skill or trait
+
+        if user pick skill
+            print skill traits 
+        ask user to choose a skill
+            show skill Statistics
+        else 
+            print invali option try again
+
+        if user pick trait
+            print trait traits 
+        ask user to choose a trait
+            show trait Statistics
+        else 
+            print invali option try again
+
+    ask user if they want to choose another trait or skill to check
+    
+    if user says yes 
+        start over
+    if user says no
+        make them go to main
+    else 
+        print invali option try again
