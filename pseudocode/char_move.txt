@@ -1,0 +1,15 @@
+Character Movement PSEUDOCODE
+import pygame
+import character stats
+
+define walk:
+    if arrow key is pressed, use speed in direction with correct frames
+    else: wait
+
+define sprint:
+    if not walk: 
+        wait
+    else if walk:
+        if sprink key (X) is pressed, increase speed, show sprint frames. 
+        else: wait
+

@@ -1,7 +1,7 @@
 import pygame
 
 
-Def class skip button: 
+class skip button: 
     define in it and take in self,text,x,y,width, hieght and color 
         do the self thing so self.rect = pygame,rect(Variables)
         also remmeber to include text and color 
@@ -16,7 +16,7 @@ Def class skip button:
 
     def if it clicked import self and event 
         if event type is equal to pygame.MOUSEBUTTONDWON 
-            if slef collidepoint(event.pos)
+            if self collidepoint(event.pos)
                 return it true 
         
         return false 
