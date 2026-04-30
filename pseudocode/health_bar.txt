@@ -1,4 +1,4 @@
-# NS 1st Health Bar/ enemy attack
+Health Bar/ enemy attack
 import pygame
 from enemy import attack_player
 from char_move_set import attack_enemy

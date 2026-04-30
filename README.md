@@ -20,7 +20,7 @@ Notes being used in this class BUT if you have a full run file (.exe) for your p
 
 ## Licence
 ***
-Anything made for school has bo copyright
+Anything made for school has no copyright
 
 ## Contributers
 - Nicole12131

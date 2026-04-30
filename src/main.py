@@ -1,31 +1,48 @@
 import pygame 
 import os 
+import sys
 
-class skip_button: 
-    skip = #Variable 
-    def __init__(self,text,x,y,width, height, color ):
-        self.rect = pygame.rect(text)
-        self.rect = pygame.rect(x)
-        self.rect = pygame.rect(y)
-        self.rect = pygame.rect(width)
-        self.rect = pygame.rect(height)
-        self.rect = pygame.rect(color)
+pygame.init()
 
-    def draw(self,screen): 
-        #more thingy 
-        #more thingy 
-        #more thingy 
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Skill System")
 
-    
-     def clicked(self,event):
-        if event == #pygame.#MOUSEBUTTONDWOW: 
-            if self #collidepoint(event.pos)
-                #return it true 
-        
-        return #false 
+font = pygame.font.SysFont(None, 36)
+
+WHITE = (255, 255, 255)
+GRAY = (180, 180, 180)
+DARK = (50, 50, 50)
+GREEN = (100, 200, 100)
+
+class skipbutton:
+    def __init__(self, text, x, y, w, h):
+        self.text = text
+        self.rect = pygame.Rect(x, y, w, h)
+
+    def draw(self):
+        pygame.draw.rect(screen, GRAY, self.rect)
+        txt = font.render(self.text, True, DARK)
+        screen.blit(txt, (self.rect.x + 10, self.rect.y + 10))
+
+    def is_clicked(self, pos):
+        return self.rect.collidepoint(pos)
 
 
 
-while skip_button == False: 
-   
-   
+
+
+while skipbutton == False: 
+    #Display
+    #    then play the cutscene display on screen a long paragraph about whats happening 
+    #show the user "Prelude:
+      #          Run: Dramatic Music 
+      #          Display Image: Castle
+      #          Display Text: There was one A kingdom called ArisKatsia
+      #          Display Image: The last kings lays slaghtered in from the princes eyes. 
+      #          Display Text: This is a trial about tragedy. 
+      #          Display Image: Destroyed Kingdom
+       #         Display Text: Now it's only up to you, our last prince, Zan.
+       #         Pan to Game Title: THE FINAL BLIGHT  
+        #        Display: Menu
+   print("isabella x max ")
