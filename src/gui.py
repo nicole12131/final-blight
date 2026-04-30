@@ -17,7 +17,7 @@ RED = (200, 100, 100)
 
 skills = {"Strength": 1, "Magic": 2}
 traits = {"Health": 5, "Stamina": 3}
-materials = 100
+materials = 250
 
 state = "main"
 

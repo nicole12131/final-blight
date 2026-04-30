@@ -12,3 +12,10 @@ def draw_text(text, size, color, surface, x, y):
 screen = pygame.display.set_mode((800, 600)) #Screen x, y
 draw_text('Hello World!', 32, (0, 255, 255), screen, 100, 100)
 #        ^^^^text^^^^^^^^size^^^^^color^^^^^^surface^^^x^^^y^^
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+    pygame.display.update()

@@ -5,58 +5,58 @@ pygame.init()
 screen = pygame.display.set_mode((600, 400))
 clock = pygame.time.Clock()
 
-def create_sprite_with_mask(color, size, shape="circle"):
-    """
-    Creates a surface (image), its bounding rectangle, and a collision mask.
-    """
-    # Create a surface with SRCALPHA to support transparency (the 'A' in RGBA)
-    surf = pygame.Surface((size, size), pygame.SRCALPHA)
+def pixel_perfect_collision(mask1, mask2, offset):
+    #Checks for pixel-perfect collision between two masks given an offset.
+    #Returns True if there's a collision, False otherwise.
     
-    if shape == "circle":
-        pygame.draw.circle(surf, color, (size//2, size//2), size//2)
-    else:
-        # Draw a triangle to create transparent areas in the corners of the square surface
-        pygame.draw.polygon(surf, color, [(size//2, 0), (size, size), (0, size)])
-    
-    rect = surf.get_rect()
-    
-    # 2. Generate a Mask: This treats transparent pixels as 'empty' and colored pixels as 'solid'
-    mask = pygame.mask.from_surface(surf)
-    
-    return surf, rect, mask
+    return mask1.overlap(mask2, offset) is not None
 
-# Create the stationary target (Triangle/Star) and the player (Circle)
-target_surf, target_rect, target_mask = create_sprite_with_mask((255, 0, 0), 100, "star")
-target_rect.center = (300, 200)
-
-player_surf, player_rect, player_mask = create_sprite_with_mask((0, 255, 0), 80, "circle")
+test_player = pygame.Surface((50, 50), pygame.SRCALPHA)
+test_map = pygame.Surface((200, 200), pygame.SRCALPHA)
 
 running = True
-while running:
+
+def move(player_rect, keys):
+    speed = 5
+    if keys[pygame.K_LEFT]:
+        player_rect.x -= speed
+    if keys[pygame.K_RIGHT]:
+        player_rect.x += speed
+    if keys[pygame.K_UP]:
+        player_rect.y -= speed
+    if keys[pygame.K_DOWN]:
+        player_rect.y += speed
+
+while running: 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # 3. Update player position to follow the mouse cursor
-    player_rect.center = pygame.mouse.get_pos()
+    keys = pygame.key.get_pressed()
+    move(test_player.get_rect(), keys)
 
-    # 4. Calculate the Offset
-    # mask.overlap requires the distance between the top-left corners of the two masks
-    offset = (target_rect.x - player_rect.x, target_rect.y - player_rect.y)
+    # Create masks for collision detection
+    player_mask = pygame.mask.from_surface(test_player)
+    map_mask = pygame.mask.from_surface(test_map)
 
-    # 5. Pixel-Perfect Collision Check
-    # overlap() returns the first point of contact (x, y) or None if no collision
-    if player_mask.overlap(target_mask, offset):
-        bg_color = (50, 0, 0)  # Turn background dark red on collision
-    else:
-        bg_color = (30, 30, 30) # Default dark grey
+    # Calculate offset between player and map
+    offset = (test_player.get_rect().x - test_map.get_rect().x, 
+              test_player.get_rect().y - test_map.get_rect().y)
 
-    # 6. Draw everything to the screen
-    screen.fill(bg_color)
-    screen.blit(target_surf, target_rect)
-    screen.blit(player_surf, player_rect)
-    
+    # Check for collision
+    collision = pixel_perfect_collision(player_mask, map_mask, offset)
+
+    # Clear screen
+    screen.fill((255, 255, 255))
+
+    # Draw the map and player
+    screen.blit(test_map, (100, 100))
+    screen.blit(test_player, (150, 150))
+
+    # Display collision status
+    font = pygame.font.SysFont(None, 24)
+    text = font.render(f"Collision: {collision}", True, (0, 0, 0))
+    screen.blit(text, (10, 10))
+
     pygame.display.flip()
-    clock.tick(60) # Maintain 60 Frames Per Second
-
-pygame.quit()
+    clock.tick(60)
