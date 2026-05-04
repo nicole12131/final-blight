@@ -39,10 +39,10 @@ class DataManager:
         try:
             df = roster.get_dataframe()
             df.to_csv(filename, index=False)
-            print(f"✓ Roster exported to: {filename}")
+            print(f"Roster exported to: {filename}")
             return filename
         except Exception as e:
-            print(f"✗ Error exporting to CSV: {e}")
+            print(f"Error exporting to CSV: {e}")
             return None
     
     def import_from_csv(self, filename=None):
@@ -85,10 +85,10 @@ class DataManager:
                 character = Character(name, race, char_class, level, attributes)
                 roster.add_character(character)
             
-            print(f"✓ Imported {len(roster)} characters from: {filename}")
+            print(f" Imported {len(roster)} characters from: {filename}")
             return roster
         except Exception as e:
-            print(f"✗ Error importing from CSV: {e}")
+            print(f"Error importing from CSV: {e}")
             return roster
     
     def export_to_detailed_csv(self, roster, filename=None):
@@ -166,10 +166,10 @@ class DataManager:
             with open(filename, 'w', encoding='utf-8') as jsonfile:
                 json.dump(data, jsonfile, indent=2, ensure_ascii=False)
             
-            print(f"✓ Roster exported to JSON: {filename}")
+            print(f"Roster exported to JSON: {filename}")
             return filename
         except Exception as e:
-            print(f"✗ Error exporting to JSON: {e}")
+            print(f"Error exporting to JSON: {e}")
             return None
     
     def import_from_json(self, filename):
