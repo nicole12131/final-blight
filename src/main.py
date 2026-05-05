@@ -45,7 +45,7 @@ while skipbutton == False:
        #         Display Text: Now it's only up to you, our last prince, Zan.
        #         Pan to Game Title: THE FINAL BLIGHT  
         #        Display: Menu
-   print("Nicole X Edwing")
+   print("Hi")
 
    if skipbutton == True: 
        print(" wow")
