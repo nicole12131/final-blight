@@ -51,7 +51,7 @@ def get_stats_for_class(name, level=1):
 
 def setup_char_value(characters, target_name=None):
 
-    # Stores level‑based stat increases
+    # Stores levelbased stat increases
     level_dic = {
         'Stats': {'MP': 0, 'HP': 0, 'Str': 0, 'Atk': 0, 'Def': 0,
                   'Mag': 0, 'Spr': 0, 'Acc': 0, 'Spd': 0, 'Evs': 0}

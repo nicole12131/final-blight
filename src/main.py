@@ -30,27 +30,45 @@ class skipbutton:
 
 
 
+skipbutton = False
 
+# Function to check for skip (needs to be updated by input handler)
+def check_skip():
+    
+    return skipbutton 
 
-while skipbutton == False: 
-    #Display
-    #    then play the cutscene display on screen a long paragraph about whats happening 
-    #show the user "Prelude:
-      #          Run: Dramatic Music 
-      #          Display Image: Castle
-      #          Display Text: There was one A kingdom called ArisKatsia
-      #          Display Image: The last kings lays slaghtered in from the princes eyes. 
-      #          Display Text: This is a trial about tragedy. 
-      #          Display Image: Destroyed Kingdom
-       #         Display Text: Now it's only up to you, our last prince, Zan.
-       #         Pan to Game Title: THE FINAL BLIGHT  
-        #        Display: Menu
-   print("Hi")
+# 1. Start Cutscene
+print("Dramatic Music Playing...") # Run: Dramatic Music
 
-   if skipbutton == True: 
-       print(" wow")
-       print('you have skipped the intro')
-       print("Lets hope you know what your doing")
+# 2. Prologue Section
+if not check_skip():
+    print("[Display Image: Castle]")
+    print("Prelude: A kingdom called ArisKatsia") # Display Text
+    # pause(3) # Wait 3 seconds
+
+# 3. Tragedy Section
+if not check_skip():
+    print("[Display Image: Slain King]")
+    print("The last king lays slaughtered in front of the prince's eyes.")
+    print("This is a trial about tragedy.")
+    # pause(4)
+
+# 4. Call to Action Section
+if not check_skip():
+    print("[Display Image: Destroyed Kingdom]")
+    print("Now it's only up to you, our last prince, Zan.")
+    # pause(3)
+
+# 5. Ending Section
+print("[Pan to Game Title: THE FINAL BLIGHT]")
+# display_menu() 
+print("Menu Displayed")
+
+if skipbutton == True: 
+    print(" wow")
+    print('you have skipped the intro')
+    print("Lets hope you know what your doing")
        #load new game into a csv
 
+    
     
