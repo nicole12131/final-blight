@@ -1,28 +1,34 @@
 import pygame
 
-pygame.init()
-pygame.mixer.init()
+# Initialize the mixer lazily so this module can be imported without forcing audio start.
+def init_audio():
+    if not pygame.mixer.get_init():
+        pygame.mixer.init()
 
-def load_music(intro, loop):
-    pygame.mixer.music.load(intro)
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        pygame.time.wait(100)
-    pygame.mixer.music.load(loop)
-    pygame.mixer.music.play(-1)
 
+# Start looping background music from the given file.
+def load_music(loop_path, volume=0.4):
+    init_audio()
+    try:
+        pygame.mixer.music.load(loop_path)
+        pygame.mixer.music.set_volume(volume)
+        pygame.mixer.music.play(-1)
+    except pygame.error:
+        print(f"Warning: unable to load music '{loop_path}'")
+
+
+# Stop the currently playing music if audio is initialized.
 def stop_music():
-    pygame.mixer.music.stop()
-
-def sfx(path):
-    sound = pygame.mixer.Sound(path)
-    sound.play()
+    if pygame.mixer.get_init():
+        pygame.mixer.music.stop()
 
 
-load_music('assets\music\Hero_theme_intro.mp3', 'assets\music\Hero_theme_loop.mp3')
-
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+# Play one-shot sound effects.
+def sfx(path, volume=0.6):
+    init_audio()
+    try:
+        sound = pygame.mixer.Sound(path)
+        sound.set_volume(volume)
+        sound.play()
+    except pygame.error:
+        print(f"Warning: unable to play sound '{path}'")

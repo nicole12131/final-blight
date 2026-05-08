@@ -5,10 +5,12 @@ import os
 import json
 import sys
 from datetime import datetime
-import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from character import Character, CharacterRoster
+try:
+    from .character import Character, CharacterRoster
+except ImportError:
+    from character import Character, CharacterRoster
 
 class DataManager:
     # Handles saving, loading, and exporting character data.
@@ -35,16 +37,25 @@ class DataManager:
         #     Filename if successful, None otherwise
         if filename is None:
             filename = self.csv_file
-        
+
         try:
-            df = roster.get_dataframe()
-            df.to_csv(filename, index=False)
+            rows = roster.get_rows()
+            if rows:
+                fieldnames = list(rows[0].keys())
+            else:
+                fieldnames = ['Name', 'Race', 'Class', 'Level', 'skills_count']
+
+            with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(rows)
+
             print(f"Roster exported to: {filename}")
             return filename
         except Exception as e:
             print(f"Error exporting to CSV: {e}")
             return None
-    
+
     def import_from_csv(self, filename=None):
         # Import characters from CSV file.
         #
@@ -55,36 +66,33 @@ class DataManager:
         #     CharacterRoster object with imported characters
         if filename is None:
             filename = self.csv_file
-        
+
         roster = CharacterRoster()
-        
+
         if not os.path.exists(filename):
             print(f"File not found: {filename}")
             return roster
-        
+
         try:
-            df = pd.read_csv(filename)
-            
-            for _, row in df.iterrows():
-                # Extract basic info
-                name = row['Name']
-                race = row['Race']
-                char_class = row['Class']
-                level = int(row['Level'])
-                
-                # Extract attributes
-                attributes = {}
-                for col in df.columns:
-                    if col not in ['Name', 'Race', 'Class', 'Level', 'skills_count']:
-                        try:
-                            attributes[col] = int(row[col])
-                        except (ValueError, TypeError):
-                            pass
-                
-                # Create character
-                character = Character(name, race, char_class, level, attributes)
-                roster.add_character(character)
-            
+            with open(filename, 'r', encoding='utf-8') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    name = row.get('Name', '')
+                    race = row.get('Race', '')
+                    char_class = row.get('Class', '')
+                    level = int(row.get('Level', 1) or 1)
+
+                    attributes = {}
+                    for key, value in row.items():
+                        if key not in ['Name', 'Race', 'Class', 'Level', 'skills_count'] and value:
+                            try:
+                                attributes[key] = int(value)
+                            except (ValueError, TypeError):
+                                pass
+
+                    character = Character(name, race, char_class, level, attributes)
+                    roster.add_character(character)
+
             print(f" Imported {len(roster)} characters from: {filename}")
             return roster
         except Exception as e:

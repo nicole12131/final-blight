@@ -1,87 +1,137 @@
+import os
 import pygame
-import sys
 
-pygame.init()
+try:
+    from .character import GameCharacter
+    from .ground import GroundLayer, WallLayer, MiscLayer, SkyBoxLayer
+    from .health_bar import HealthBar
+    from .music import load_music, stop_music, sfx
+    from .world import World
+    from .character_attack import AttackPlayer
+    from .dodge import DodgePlayer
+    from .skill_stat_manager import get_stats_for_class
+    from .data_manager import DataManager
+except ImportError:
+    from character import GameCharacter
+    from ground import GroundLayer, WallLayer, MiscLayer, SkyBoxLayer
+    from health_bar import HealthBar
+    from music import load_music, stop_music, sfx
+    from world import World
+    from character_attack import AttackPlayer
+    from dodge import DodgePlayer
+    from skill_stat_manager import get_stats_for_class
+    from data_manager import DataManager
 
-WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Skill System")
+BASE_DIR = os.path.dirname(__file__)
+ASSETS_DIR = os.path.normpath(os.path.join(BASE_DIR, '..', 'assets'))
+MUSIC_FILE = os.path.join(ASSETS_DIR, 'music', 'Hero_theme_loop.mp3')
+SFX_FILE = os.path.join(ASSETS_DIR, 'music', 'Hero_theme_loop.mp3')
 
-WHITE = (255, 255, 255)
-GRAY = (180, 180, 180)
-DARK = (50, 50, 50)
-GREEN = (100, 200, 100)
-RED = (255, 64, 64)
+WIDTH, HEIGHT = 360, 240
+WHITE = (240, 240, 240)
+ENEMY_COLOR = (180, 50, 50)
+PLAYER_COLOR = (0, 140, 255)
 
-font = pygame.font.SysFont(None, 36)
 
-running = True
-intro_skipped = False
+def load_game_audio():
+    # Start looping game music if the asset exists.
+    if os.path.exists(MUSIC_FILE):
+        load_music(MUSIC_FILE)
+    else:
+        print(f"Music not found: {MUSIC_FILE}")
 
-class SkipButton:
-    def __init__(self, text, x, y, w, h):
-        self.text = text
-        self.rect = pygame.Rect(x, y, w, h)
 
-    def draw(self):
-        pygame.draw.rect(screen, GRAY, self.rect)
-        txt = font.render(self.text, True, DARK)
-        screen.blit(txt, (self.rect.x + 15, self.rect.y + 10))
+def create_game():
+    # Initialize Pygame and create the game objects.
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption('Final Blight Demo')
+    font = pygame.font.SysFont(None, 20)
 
-    def is_clicked(self, pos):
-        return self.rect.collidepoint(pos)
+    # Placeholder PNG paths - replace with your actual layer images
+    ground_png = os.path.join(ASSETS_DIR, 'layers', 'ground.png')
+    wall_png = os.path.join(ASSETS_DIR, 'layers', 'wall.png')
+    misc_png = os.path.join(ASSETS_DIR, 'layers', 'misc.png')
 
-skip_button = SkipButton("Skip", 650, 500, 120, 50)
+    sky_layer = SkyBoxLayer(pygame.Rect(0, 0, WIDTH, 80), z=100, color=(100, 180, 255, 160))
 
-intro_lines = [
-    "Prelude: A kingdom called ArisKatsia",
-    "The last king lays slaughtered in front of the prince's eyes.",
-    "This is a trial about tragedy.",
-    "Now it's only up to you, our last prince, Zan.",
-    "THE FINAL BLIGHT"
-]
+    world_layers = [
+        GroundLayer(ground_png, rect=pygame.Rect(0, 0, WIDTH, HEIGHT)),
+        WallLayer(wall_png, rect=pygame.Rect(120, 0, 120, HEIGHT)),
+        MiscLayer(misc_png, rect=pygame.Rect(50, 50, 100, 50)),
+    ]
 
-line_index = 0
-last_update = pygame.time.get_ticks()
-delay = 2500  
-print("Dramatic Music Playing...")
+    world = World(world_layers)
+    player = GameCharacter(WIDTH // 2, HEIGHT // 2, width=18, height=28, color=PLAYER_COLOR)
+    health_bar = HealthBar(8, 8, 120, 16, max_health=100)
+    enemy_rect = pygame.Rect(WIDTH - 60, HEIGHT - 60, 24, 40)
 
-while running:
-    screen.fill(RED)
+    attack_demo = AttackPlayer()
+    dodge_demo = DodgePlayer()
+    stats = get_stats_for_class('Zan', 1)
+    _ = DataManager(data_dir=os.path.join(BASE_DIR, 'game_data'))
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    return screen, font, world, player, health_bar, enemy_rect, attack_demo, dodge_demo, stats, sky_layer
+
+
+def main():
+    screen, font, world, player, health_bar, enemy_rect, attack_demo, dodge_demo, stats, sky_layer = create_game()
+    load_game_audio()
+
+    clock = pygame.time.Clock()
+    running = True
+
+    while running:
+        keys = pygame.key.get_pressed()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_z:
+                    attack_demo.attack(player.rect, enemy_rect)
+                    if player.rect.colliderect(enemy_rect):
+                        health_bar.update(10)
+                elif event.key == pygame.K_f:
+                    if os.path.exists(SFX_FILE):
+                        sfx(SFX_FILE)
+
+        player.update(keys, world, world.layers)
+
+        screen.fill((18, 18, 38))
+        for layer in sorted(world.layers, key=lambda l: l.draw_order):
+            layer.draw(screen)
+
+        screen.blit(player.image, player.rect)
+        sky_layer.draw(screen)
+        pygame.draw.rect(screen, ENEMY_COLOR, enemy_rect)
+        health_bar.draw(screen)
+
+        info_text = [
+            'Move: WASD',
+            'Attack: Z',
+            'Play SFX: F',
+            f"Enemy hits taken: {100 - health_bar.health}",
+            f"Zan HP @ level 1: {stats.get('HP', 0)}",
+        ]
+
+        for idx, line in enumerate(info_text):
+            surface = font.render(line, True, WHITE)
+            screen.blit(surface, (8, 36 + idx * 18))
+
+        if health_bar.health == 0:
+            game_over = font.render('Game Over - press ESC to quit', True, (255, 50, 50))
+            screen.blit(game_over, (20, HEIGHT // 2 - 10))
+
+        if keys[pygame.K_ESCAPE]:
             running = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if skip_button.is_clicked(event.pos):
-                intro_skipped = True
-                line_index = len(intro_lines) - 1
+        pygame.display.flip()
+        clock.tick(60)
 
-    skip_button.draw()
-
-
-    current_time = pygame.time.get_ticks()
-
-    if current_time - last_update > delay and not intro_skipped:
-        if line_index < len(intro_lines) - 1:
-            line_index += 1
-            last_update = current_time
-
-    text = font.render(intro_lines[line_index], True, WHITE)
-    screen.blit(text, (50, HEIGHT // 2))
-
-    if intro_skipped:
-        skip_text = font.render(
-            "You skipped the intro.", True, GREEN
-        )
-        screen.blit(skip_text, (50, HEIGHT // 2 + 60))
-
-    pygame.display.flip()
-
-pygame.quit()
-sys.exit()
+    stop_music()
+    pygame.quit()
 
 
-
-#When the user quit add that it loads the new game into a new csv and start displaying first level 
+if __name__ == '__main__':
+    main()
