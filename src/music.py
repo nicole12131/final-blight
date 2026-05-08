@@ -32,3 +32,20 @@ def sfx(path, volume=0.6):
         sound.play()
     except pygame.error:
         print(f"Warning: unable to play sound '{path}'")
+
+def button(x, y, w, h, text):
+    font = pygame.font.SysFont(None, 24)
+    rect = pygame.Rect(x, y, w, h)
+    pygame.draw.rect(screen, (200, 200, 200), rect)
+    txt = font.render(text, True, (50, 50, 50))
+    screen.blit(txt, (x + 10, y + 10))
+
+
+pygame.init()
+screen = pygame.display.set_mode((360, 240))
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    button(10, 10, 160, 40, "Play Music")

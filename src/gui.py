@@ -45,12 +45,12 @@ upgrade_buttons = []
 
 y = 180
 for s in skills:
-    upgrade_buttons.append(("skill", s, 10, Button(f"{s} (+1) - 10", 100, y, 250, 40)))
+    upgrade_buttons.append(("skill", s, 5, Button(f"{s} (+1 skill) materials - 5", 100, y, 250, 40)))
     y += 60
 
 y = 180
 for t in traits:
-    upgrade_buttons.append(("trait", t, 5, Button(f"{t} (+1) - 5", 450, y, 250, 40)))
+    upgrade_buttons.append(("trait", t, 5, Button(f"{t} (+1 trait) materials - 5", 450, y, 250, 40)))
     y += 60
 
 
