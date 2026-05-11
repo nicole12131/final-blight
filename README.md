@@ -8,7 +8,8 @@ Paragraph discription of your project
 ***
 1. Step by step instructions
 2. Detailing how to run your project
-3. Including a list of any libraries that need downloaded!
+3. pygame>=2.5.2
+   pygame-ce>=2.5.7
 
 ## Details on Project features
 ***
