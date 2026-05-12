@@ -1,23 +1,36 @@
 # FINAL BLIGHT
 
 ***
-![Image of the code while running](location of image in folders)
+![Final Blight Map](assets\Screenshot.png)
 Paragraph discription of your project
 
 ## How to use
 ***
-1. Step by step instructions
-2. Detailing how to run your project
-3. pygame>=2.5.2
-   pygame-ce>=2.5.7
+1. Install Python 3.7 or higher from python.org
+2. Clone or download the repository to your local machine
+3. Navigate to project directory: cd RPG-Character-Manager
+4. Install required libraries using pip:
+   pygame >=2.5.2
+   pygame-ce>=2.5.7 - Data visualization (characters and movement controls)
+5. Install with: pip install -r requirements.txt
+6. Run the application: python src/main.py
+7. the on-screen menu to create characters, visualize data, analyze stats, and export data
 
 ## Details on Project features
 ***
-- ALL key features in your repository with a detailed discription
-- This is a list frequently will include emojis
+🚶 Character  moviment including walk,attack,dodge and run
+🥷 Active combat keeping the user on their toes
+🌲 Graphics that are made by hand with great details
+📕 Complex and unique storyline immersing the user completely
+📊 Tracking and measuring characters heath during combat
 
 ## Instalation Instructions 
-Notes being used in this class BUT if you have a full run file (.exe) for your project, this is where setup instructions go! 
+This project is designed for educational purposes and for playing a good game in python
+Prerequisites:
+
+Python 3.7 or higher
+pip package manager
+All required dependencies listed in requirements.txt
 
 ## Licence
 ***
