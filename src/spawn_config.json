@@ -1,0 +1,30 @@
+{
+  "player": {
+    "x": 180,
+    "y": 120,
+    "name": "Default spawn point"
+  },
+  "world": {
+    "width": 16384,
+    "height": 16384,
+    "name": "16k x 16k world"
+  },
+  "layers": {
+    "ground": {
+      "enabled": true,
+      "parallax_factor": 1.0
+    },
+    "wall": {
+      "enabled": true,
+      "parallax_factor": 1.0
+    },
+    "misc": {
+      "enabled": true,
+      "parallax_factor": 1.0
+    },
+    "skybox": {
+      "enabled": true,
+      "parallax_factor": 1.0
+    }
+  }
+}

@@ -30,11 +30,12 @@ class GameCharacter(pygame.sprite.Sprite):
         self.body_rect.centery = self.rect.centery
 
     # Try moving the player while rolling back on collision.
-    def try_move(self, dx, dy, world, layers):
+    def try_move(self, dx, dy, world, layers, collision_enabled=True):
         if dx == 0 and dy == 0:
             return
 
-        old_positions = [(layer.rect.x, layer.rect.y) for layer in world.layers]
+        # Save layer world offsets (for viewport-based rendering)
+        old_offsets = [(layer.world_offset_x, layer.world_offset_y) for layer in world.layers]
         old_world_x, old_world_y = self.world_x, self.world_y
 
         world.scroll(-dx, -dy)
@@ -42,19 +43,33 @@ class GameCharacter(pygame.sprite.Sprite):
         self.world_y += dy
         self.update_hitbox()
 
-        if check_collision(self, layers):
-            for layer, (old_x, old_y) in zip(world.layers, old_positions):
-                layer.rect.x, layer.rect.y = old_x, old_y
+        if collision_enabled and check_collision(self, layers):
+            # Debug: print collision info
+            print(f"COLLISION DETECTED at ({self.world_x}, {self.world_y})")
+            for i, layer in enumerate(layers):
+                if hasattr(layer, 'collidable') and layer.collidable and layer.mask:
+                    world_x = int(self.world_x)
+                    world_y = int(self.world_y)
+                    if 0 <= world_x < layer.image_size[0] and 0 <= world_y < layer.image_size[1]:
+                        try:
+                            pixel_value = layer.mask.get_at((world_x, world_y))
+                            print(f"  Layer {i}: ({world_x}, {world_y}) = {pixel_value}")
+                        except:
+                            print(f"  Layer {i}: Error reading pixel")
+            
+            # Collision detected - restore previous state
+            for layer, (old_x, old_y) in zip(world.layers, old_offsets):
+                layer.world_offset_x, layer.world_offset_y = old_x, old_y
             self.world_x, self.world_y = old_world_x, old_world_y
             self.update_hitbox()
 
     # Update movement each frame.
-    def update(self, keys, world, layers):
+    def update(self, keys, world, layers, collision_enabled=True):
         dx = (keys[pygame.K_d] - keys[pygame.K_a]) * self.speed
         dy = (keys[pygame.K_s] - keys[pygame.K_w]) * self.speed
 
-        self.try_move(dx, 0, world, layers)
-        self.try_move(0, dy, world, layers)
+        self.try_move(dx, 0, world, layers, collision_enabled)
+        self.try_move(0, dy, world, layers, collision_enabled)
 
 
 # Simple data structures for persisted characters.
