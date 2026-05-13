@@ -24,7 +24,7 @@
     },
     "skybox": {
       "enabled": true,
-      "parallax_factor": 1.0
+      "parallax_factor": 0
     }
   }
 }

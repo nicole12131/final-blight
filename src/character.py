@@ -65,8 +65,8 @@ class GameCharacter(pygame.sprite.Sprite):
 
     # Update movement each frame.
     def update(self, keys, world, layers, collision_enabled=True):
-        dx = (keys[pygame.K_d] - keys[pygame.K_a]) * self.speed
-        dy = (keys[pygame.K_s] - keys[pygame.K_w]) * self.speed
+        dx = (keys[pygame.K_a] - keys[pygame.K_d]) * self.speed
+        dy = (keys[pygame.K_w] - keys[pygame.K_s]) * self.speed
 
         self.try_move(dx, 0, world, layers, collision_enabled)
         self.try_move(0, dy, world, layers, collision_enabled)
