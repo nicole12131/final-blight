@@ -31,7 +31,9 @@ class BaseLayer:
         self.collidable = collidable
         self.draw_order = draw_order
         # Create mask from the original image for collision detection
-        self.mask = pygame.mask.from_surface(self.original_image, 1) if (self.collidable and self.original_image) else None
+        # Use a high threshold so only fully opaque pixels count as solid.
+        # `threshold=254` means only alpha==255 will be considered opaque.
+        self.mask = pygame.mask.from_surface(self.original_image, 254) if (self.collidable and self.original_image) else None
 
     def _create_fallback(self, rect):
         #Create a fallback surface.

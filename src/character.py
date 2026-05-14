@@ -18,7 +18,6 @@ class GameCharacter(pygame.sprite.Sprite):
         self.world_y = y
 
         self.body_rect = pygame.Rect(0, 0, width, height)
-        # No need for body_mask since we use pixel checking
 
         self.speed = 4
 
@@ -28,6 +27,10 @@ class GameCharacter(pygame.sprite.Sprite):
     def update_hitbox(self):
         self.body_rect.centerx = self.rect.centerx
         self.body_rect.centery = self.rect.centery
+
+    def get_collision_mask(self):
+        """Return a mask generated from the character surface (respecting alpha)."""
+        return pygame.mask.from_surface(self.image)
 
     # Try moving the player while rolling back on collision.
     def try_move(self, dx, dy, world, layers, collision_enabled=True):
