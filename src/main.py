@@ -254,7 +254,7 @@ def main():
             'Test collision: X',
             f"Enemy hits taken: {100 - health_bar.health}",
             f"Zan HP @ level 1: {stats.get('HP', 0)}",
-            'Press E to win sim Press 100 times: E',
+            'Press E to win ',
         ]
 
         for idx, line in enumerate(info_text):
@@ -267,7 +267,7 @@ def main():
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_e]:
-            count += 1
+            pygame.quit()
 
         if count >= 100:
             print("You Won! Ending game...")
