@@ -34,7 +34,7 @@ class BaseLayer:
         self.mask = pygame.mask.from_surface(self.original_image, 1) if (self.collidable and self.original_image) else None
 
     def _create_fallback(self, rect):
-        """Create a fallback surface."""
+        #Create a fallback surface.
         if rect is None:
             rect = pygame.Rect(0, 0, 360, 240)
         self.rect = rect
@@ -51,11 +51,11 @@ class BaseLayer:
         self.world_offset_y = max(0, min(self.world_offset_y, max(0, self.image_size[1] - 240)))
 
     def get_collision_point(self, world_x, world_y):
-        """
-        Get the pixel coordinates in the layer's mask for collision detection.
-        Converts world coordinates to layer image coordinates.
-        For collision detection, we use world coordinates directly since the image represents the entire world.
-        """
+        
+        #Get the pixel coordinates in the layer's mask for collision detection.
+        #Converts world coordinates to layer image coordinates.
+        #For collision detection, we use world coordinates directly since the image represents the entire world.
+        
         # For collision detection, use world coordinates directly (no viewport offset)
         layer_x = int(world_x)
         layer_y = int(world_y)

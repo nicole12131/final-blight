@@ -8,7 +8,7 @@ except ImportError:
 
 # GameCharacter controls movement and collision interactions in an open world.
 class GameCharacter(pygame.sprite.Sprite):
-    def __init__(self, x, y, width=32, height=48, color=(0, 140, 255)):
+    def __init__(self, x, y, width=10, height=10, color=(0, 140, 255)):
         super().__init__()
         self.image = pygame.Surface((width, height), pygame.SRCALPHA)
         self.image.fill(color)

@@ -5,9 +5,9 @@
     "name": "Default spawn point"
   },
   "world": {
-    "width": 16384,
-    "height": 16384,
-    "name": "16k x 16k world"
+    "width": 15360,
+    "height": 8640,
+    "name": "16k world"
   },
   "layers": {
     "ground": {
@@ -24,7 +24,7 @@
     },
     "skybox": {
       "enabled": true,
-      "parallax_factor": 1.0
+      "parallax_factor": 0
     }
   }
 }

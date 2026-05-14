@@ -1,13 +1,12 @@
-"""
-Spawn point configuration manager.
-Allows editing of spawn locations for the player and other entities.
-"""
+#Spawn point configuration manager.
+#Allows editing of spawn locations for the player and other entities.
+
 import json
 import os
 
 
 class SpawnConfig:
-    """Manages spawn point configuration for the game."""
+    #Manages spawn point configuration for the game.#
     
     DEFAULT_CONFIG = {
         "player": {
@@ -16,8 +15,8 @@ class SpawnConfig:
             "name": "Player spawn point"
         },
         "world": {
-            "width": 16384,
-            "height": 16384,
+            "width": 15360,
+            "height": 8640,
             "name": "World dimensions"
         },
         "layers": {
@@ -31,17 +30,17 @@ class SpawnConfig:
             },
             "misc": {
                 "enabled": True,
-                "parallax_factor": 0.95
+                "parallax_factor": 1.0
             },
             "skybox": {
                 "enabled": True,
-                "parallax_factor": 0.5
+                "parallax_factor": 0
             }
         }
     }
     
     def __init__(self, config_path=None):
-        """Initialize spawn config from file or use defaults."""
+        #Initialize spawn config from file or use defaults.
         if config_path is None:
             config_path = os.path.join(os.path.dirname(__file__), 'spawn_config.json')
         
@@ -49,7 +48,7 @@ class SpawnConfig:
         self.config = self._load_config()
     
     def _load_config(self):
-        """Load config from file or create new one with defaults."""
+        #Load config from file or create new one with defaults.
         if os.path.exists(self.config_path):
             try:
                 with open(self.config_path, 'r') as f:
@@ -63,7 +62,7 @@ class SpawnConfig:
             return self.DEFAULT_CONFIG.copy()
     
     def save_config(self):
-        """Save current config to file."""
+        #Save current config to file.
         try:
             with open(self.config_path, 'w') as f:
                 json.dump(self.config, f, indent=2)
@@ -72,12 +71,12 @@ class SpawnConfig:
             print(f"Error saving config to {self.config_path}: {e}")
     
     def get_player_spawn(self):
-        """Get player spawn point."""
+        #Get player spawn point.
         spawn = self.config.get("player", self.DEFAULT_CONFIG["player"])
         return spawn.get("x", 180), spawn.get("y", 120)
     
     def set_player_spawn(self, x, y):
-        """Set player spawn point."""
+        #Set player spawn point.
         if "player" not in self.config:
             self.config["player"] = {}
         self.config["player"]["x"] = x
@@ -85,11 +84,11 @@ class SpawnConfig:
         self.save_config()
     
     def get_world_size(self):
-        """Get world dimensions."""
+        #Get world dimensions.
         world = self.config.get("world", self.DEFAULT_CONFIG["world"])
-        return world.get("width", 16384), world.get("height", 16384)
+        return world.get("width", 15360), world.get("height", 8640)
     
     def get_layer_config(self, layer_name):
-        """Get configuration for a specific layer."""
+        #Get configuration for a specific layer.
         layers = self.config.get("layers", self.DEFAULT_CONFIG["layers"])
         return layers.get(layer_name, {"enabled": True, "parallax_factor": 1.0})

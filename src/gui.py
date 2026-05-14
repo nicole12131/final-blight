@@ -1,26 +1,40 @@
 import pygame
 import sys
-
-
+#implemnet font
 pygame.init()
 
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 900, 650
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Skill System")
 
-font = pygame.font.SysFont(None, 36)
+clock = pygame.time.Clock()
 
-WHITE = (255, 255, 255)
+WHITE = (245, 245, 245)
+BLACK = (20, 20, 20)
 GRAY = (180, 180, 180)
-DARK = (50, 50, 50)
-GREEN = (100, 200, 100)
-RED = (200, 100, 100)
+DARK_GRAY = (100, 100, 100)
+GREEN = (100, 220, 120)
+RED = (220, 120, 120)
+BLUE = (120, 170, 255)
 
-skills = {"Strength": 1, "Magic": 2}
-traits = {"Health": 5, "Stamina": 3}
+font = pygame.font.SysFont("arial", 28)
+small_font = pygame.font.SysFont("arial", 22)
+
+
+skills = {
+    "Strength": 1,
+    "Magic": 2
+}
+
+traits = {
+    "Health": 5,
+    "Stamina": 3
+}
+
 materials = 250
 
 state = "main"
+
 
 class Button:
     def __init__(self, text, x, y, w, h):
@@ -28,36 +42,38 @@ class Button:
         self.rect = pygame.Rect(x, y, w, h)
 
     def draw(self, enabled=True):
-        color = GRAY if enabled else RED
-        pygame.draw.rect(screen, color, self.rect)
-        txt = font.render(self.text, True, DARK)
-        screen.blit(txt, (self.rect.x + 10, self.rect.y + 10))
+        mouse_pos = pygame.mouse.get_pos()
 
-    def is_clicked(self, pos):
+        if not enabled:
+            color = RED
+        elif self.rect.collidepoint(mouse_pos):
+            color = BLUE
+        else:
+            color = GRAY
+
+        pygame.draw.rect(screen, color, self.rect, border_radius=8)
+        pygame.draw.rect(screen, BLACK, self.rect, 2, border_radius=8)
+
+        txt = small_font.render(self.text, True, BLACK)
+        txt_rect = txt.get_rect(center=self.rect.center)
+        screen.blit(txt, txt_rect)
+
+    def clicked(self, pos):
         return self.rect.collidepoint(pos)
 
 
-check_btn = Button("Check", 300, 200, 200, 50)
-upgrade_btn = Button("Upgrade", 300, 300, 200, 50)
-back_btn = Button("Back", 300, 500, 200, 50)
+check_btn = Button("Check Stats", 325, 220, 250, 60)
+upgrade_btn = Button("Upgrade", 325, 320, 250, 60)
+back_btn = Button("Back", 325, 560, 250, 50)
 
-upgrade_buttons = []
-
-y = 180
-for s in skills:
-    upgrade_buttons.append(("skill", s, 5, Button(f"{s} (+1 skill) materials - 5", 100, y, 250, 40)))
-    y += 60
-
-y = 180
-for t in traits:
-    upgrade_buttons.append(("trait", t, 5, Button(f"{t} (+1 trait) materials - 5", 450, y, 250, 40)))
-    y += 60
-
+def get_cost(level):
+    return 5 + level * 2
 
 def draw_main():
     screen.fill(WHITE)
-    title = font.render("Main Menu", True, DARK)
-    screen.blit(title, (320, 50))
+
+    title = font.render("Main Menu", True, BLACK)
+    screen.blit(title, (360, 80))
 
     check_btn.draw()
     upgrade_btn.draw()
@@ -65,79 +81,133 @@ def draw_main():
 
 def draw_check():
     screen.fill(WHITE)
-    title = font.render("Check Menu", True, DARK)
-    screen.blit(title, (320, 50))
 
-    y1 = 150
-    for s, lvl in skills.items():
-        txt = font.render(f"{s}: {lvl}", True, DARK)
-        screen.blit(txt, (100, y1))
-        y1 += 40
+    title = font.render("Player Stats", True, BLACK)
+    screen.blit(title, (350, 50))
 
-    y2 = 150
-    for t, lvl in traits.items():
-        txt = font.render(f"{t}: {lvl}", True, DARK)
-        screen.blit(txt, (450, y2))
-        y2 += 40
+    y = 160
+
+    skill_title = font.render("Skills", True, BLACK)
+    screen.blit(skill_title, (150, 110))
+
+    for name, level in skills.items():
+        txt = small_font.render(f"{name}: {level}", True, BLACK)
+        screen.blit(txt, (150, y))
+        y += 40
+
+    y = 160
+
+    trait_title = font.render("Traits", True, BLACK)
+    screen.blit(trait_title, (550, 110))
+
+    for name, level in traits.items():
+        txt = small_font.render(f"{name}: {level}", True, BLACK)
+        screen.blit(txt, (550, y))
+        y += 40
 
     back_btn.draw()
 
 
 def draw_upgrade():
     screen.fill(WHITE)
-    title = font.render("Upgrade Menu", True, DARK)
-    screen.blit(title, (280, 50))
 
-    mat_txt = font.render(f"Materials: {materials}", True, DARK)
-    screen.blit(mat_txt, (300, 100))
+    title = font.render("Upgrade Menu", True, BLACK)
+    screen.blit(title, (330, 50))
 
-    for kind, name, cost, btn in upgrade_buttons:
+    mats = font.render(f"Materials: {materials}", True, BLACK)
+    screen.blit(mats, (340, 100))
+
+    buttons = []
+
+    y = 180
+
+    for name, level in skills.items():
+        cost = get_cost(level)
+
+        text = f"{name} Lv {level} | Cost: {cost}"
+
+        btn = Button(text, 100, y, 300, 50)
+
         enabled = materials >= cost
         btn.draw(enabled)
 
+        buttons.append(("skill", name, cost, btn))
+
+        y += 70
+
+    y = 180
+
+    for name, level in traits.items():
+        cost = get_cost(level)
+
+        text = f"{name} Lv {level} | Cost: {cost}"
+
+        btn = Button(text, 500, y, 300, 50)
+
+        enabled = materials >= cost
+        btn.draw(enabled)
+
+        buttons.append(("trait", name, cost, btn))
+
+        y += 70
+
     back_btn.draw()
+
+    return buttons
 
 
 running = True
-clock = pygame.time.Clock()
 
 while running:
+
+    upgrade_buttons = []
+
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
+
             pos = pygame.mouse.get_pos()
 
             if state == "main":
-                if check_btn.is_clicked(pos):
+
+                if check_btn.clicked(pos):
                     state = "check"
-                elif upgrade_btn.is_clicked(pos):
+
+                elif upgrade_btn.clicked(pos):
                     state = "upgrade"
 
             elif state == "check":
-                if back_btn.is_clicked(pos):
+
+                if back_btn.clicked(pos):
                     state = "main"
 
             elif state == "upgrade":
-                if back_btn.is_clicked(pos):
+
+                if back_btn.clicked(pos):
                     state = "main"
 
                 for kind, name, cost, btn in upgrade_buttons:
-                    if btn.is_clicked(pos) and materials >= cost:
+
+                    if btn.clicked(pos) and materials >= cost:
+
+                        materials -= cost
+
                         if kind == "skill":
                             skills[name] += 1
                         else:
                             traits[name] += 1
-                        materials -= cost
 
-    
     if state == "main":
         draw_main()
+
     elif state == "check":
         draw_check()
+
     elif state == "upgrade":
-        draw_upgrade()
+        upgrade_buttons = draw_upgrade()
 
     pygame.display.flip()
     clock.tick(60)

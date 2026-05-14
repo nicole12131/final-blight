@@ -28,11 +28,11 @@ class World:
             layer.scroll(actual_dx, actual_dy)
     
     def get_camera_position(self):
-        """Get current camera position."""
+        #Get current camera position.
         return self.camera_x, self.camera_y
     
     def set_camera_position(self, x, y):
-        """Set camera position directly."""
+        #Set camera position directly.
         self.camera_x = max(0, min(x, self.world_width - self.viewport_width))
         self.camera_y = max(0, min(y, self.world_height - self.viewport_height))
 

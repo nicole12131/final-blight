@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-Comprehensive collision debugging script
-"""
+#Comprehensive collision debugging script
+
 import pygame
 import os
 import sys
