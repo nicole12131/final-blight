@@ -1,6 +1,6 @@
 import os
 import pygame
-#implemnet font
+#implement font
 try:
     from .character import GameCharacter
     from .ground import GroundLayer, WallLayer, MiscLayer, SkyBoxLayer
@@ -34,6 +34,7 @@ WHITE = (240, 240, 240)
 ENEMY_COLOR = (180, 50, 50)
 PLAYER_COLOR = (0, 140, 255)
 
+count = 0
 
 def load_game_audio():
     # Start looping game music if the asset exists.
@@ -113,7 +114,7 @@ def main():
 
     clock = pygame.time.Clock()
     running = True
-    collision_enabled = True  # Toggle for debugging
+    collision_enabled = False  # Toggle for debugging
 
     while running:
         keys = pygame.key.get_pressed()
@@ -253,6 +254,7 @@ def main():
             'Test collision: X',
             f"Enemy hits taken: {100 - health_bar.health}",
             f"Zan HP @ level 1: {stats.get('HP', 0)}",
+            'Press E to win sim Press 100 times: E',
         ]
 
         for idx, line in enumerate(info_text):
@@ -262,6 +264,15 @@ def main():
         if health_bar.health == 0:
             game_over = font.render('Game Over - press ESC to quit', True, (255, 50, 50))
             screen.blit(game_over, (20, HEIGHT // 2 - 10))
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_e]:
+            count += 1
+
+        if count >= 100:
+            print("You Won! Ending game...")
+            pygame.time.delay(2000)
+            pygame.quit()
 
         if keys[pygame.K_ESCAPE]:
             running = False

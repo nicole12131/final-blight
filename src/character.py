@@ -29,7 +29,7 @@ class GameCharacter(pygame.sprite.Sprite):
         self.body_rect.centery = self.rect.centery
 
     def get_collision_mask(self):
-        """Return a mask generated from the character surface (respecting alpha)."""
+        #Return a mask generated from the character surface (respecting alpha).
         return pygame.mask.from_surface(self.image)
 
     # Try moving the player while rolling back on collision.

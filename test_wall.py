@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
-"""
-Quick test script to check wall.png collision pixels
-"""
+
+#Quick test script to check wall.png collision pixels
+
 import pygame
 import os
 
