@@ -3,8 +3,7 @@ import pygame
 
 def body_collision(character, layer):
     """
-    Simple per-pixel collision detection for wall layers only.
-    Only WallLayer types can collide, and we check the center pixel of the character.
+    Check if the character's body collides with the layer using pixel-by-pixel checking.
     """
     # Only wall layers can collide
     if not hasattr(layer, 'collidable') or not layer.collidable:
@@ -13,20 +12,31 @@ def body_collision(character, layer):
     if not layer.mask:
         return False
 
-    # Get the world position (center of character)
-    world_x = int(character.world_x)
-    world_y = int(character.world_y)
+    # Get character body bounds in world coordinates
+    body_width, body_height = character.image.get_size()  # Use sprite size
+    body_left = int(character.world_x - body_width // 2)
+    body_top = int(character.world_y - body_height // 2)
+    body_right = body_left + body_width
+    body_bottom = body_top + body_height
     
     # Check bounds
-    if world_x < 0 or world_y < 0 or world_x >= layer.image_size[0] or world_y >= layer.image_size[1]:
+    if (body_right <= 0 or body_bottom <= 0 or 
+        body_left >= layer.image_size[0] or body_top >= layer.image_size[1]):
         return False
     
-    # Check the single center pixel
-    try:
-        pixel_value = layer.mask.get_at((world_x, world_y))
-        return pixel_value > 0  # Any non-zero alpha means collision
-    except (IndexError, ValueError):
-        return False
+    # Clip to layer bounds
+    check_left = max(0, body_left)
+    check_top = max(0, body_top)
+    check_right = min(layer.image_size[0], body_right)
+    check_bottom = min(layer.image_size[1], body_bottom)
+    
+    # Check pixels in the overlapping area
+    for x in range(check_left, check_right):
+        for y in range(check_top, check_bottom):
+            if layer.mask.get_at((x, y)) > 0:
+                return True
+    
+    return False
 
 
 def check_collision(character, layers):
