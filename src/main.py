@@ -48,7 +48,7 @@ def load_game_audio():
 def create_game():
     # Initialize Pygame and create the game objects.
     pygame.init()
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     pygame.display.set_caption('Final Blight Demo')
     font = pygame.font.SysFont(None, 20)
 
