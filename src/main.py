@@ -31,6 +31,7 @@ SFX_FILE = os.path.join(ASSETS_DIR, 'music', 'Hero_theme_loop.mp3')
 
 WIDTH, HEIGHT = 360, 240
 WHITE = (240, 240, 240)
+screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 ENEMY_COLOR = (180, 50, 50)
 PLAYER_COLOR = (0, 140, 255)
 
